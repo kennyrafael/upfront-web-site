@@ -1,0 +1,185 @@
+@import 'tailwindcss';
+
+/**
+ * The same bridge `web/src/index.css` builds, and for the same reason: the site says
+ * `text-ink-muted` and `bg-brand-700/8`, and where those colours come from is one file's
+ * business. Kept deliberately close to the app's, so a screenshot of the product sitting on
+ * this page does not look like a different company made it.
+ *
+ * Static values here are fallbacks. The live assignments are in the `.radix-themes` block
+ * below, because `@theme` emits to `:root` and Radix Themes defines `--accent-*` on its own
+ * element — `var(--accent-9)` written at `:root` resolves to nothing at all.
+ */
+@theme {
+  --color-brand-50: #f4fbf7;
+  --color-brand-100: #e6f7ed;
+  --color-brand-200: #d6f1e3;
+  --color-brand-300: #c3e9d7;
+  --color-brand-400: #acdec8;
+  --color-brand-500: #8bceb6;
+  --color-brand-600: #56ba9f;
+  --color-brand-700: #29a383;
+  --color-brand-800: #26997b;
+  --color-brand-900: #1d3b31;
+
+  --color-brand-ink: #208368;
+  --color-oncolor: #ffffff;
+
+  --color-canvas: #fbfefd;
+  --color-sheet: #ffffff;
+  --color-ink: #1a211f;
+  --color-ink-muted: #5f6d68;
+  --color-hairline: rgba(29, 59, 49, 0.1);
+
+  /* The deep field the hero and the closing band sit on. A literal, not a scale step: the
+     ramp is built for light surfaces and step 12 is not a background. */
+  --color-backdrop: oklch(0.24 0.046 162);
+  --color-onbackdrop: rgba(255, 255, 255, 0.78);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+@layer base {
+  /**
+   * Pinned to the light appearance, deliberately.
+   *
+   * The same call the public booking page makes: this belongs to visitors rather than to
+   * anyone who works here, and an institutional page is a document before it is an
+   * interface. One appearance is also one set of contrast decisions to get right rather
+   * than two.
+   */
+  .radix-themes {
+    --color-brand-50: var(--accent-2);
+    --color-brand-100: var(--accent-3);
+    --color-brand-200: var(--accent-4);
+    --color-brand-300: var(--accent-5);
+    --color-brand-400: var(--accent-6);
+    --color-brand-500: var(--accent-7);
+    --color-brand-600: var(--accent-8);
+    --color-brand-700: var(--accent-9);
+    --color-brand-800: var(--accent-10);
+    --color-brand-900: var(--accent-12);
+
+    /* Step 11 for text, step 9 for fills — the distinction the app learned the hard way
+       when its accent became choosable. Step 9 as body text fails WCAG AA even in green. */
+    --color-brand-ink: var(--accent-11);
+    --color-oncolor: var(--accent-contrast);
+
+    --color-canvas: var(--color-background);
+    --color-sheet: var(--color-panel-solid);
+    --color-ink: var(--gray-12);
+    --color-ink-muted: var(--gray-11);
+    --color-hairline: var(--gray-a6);
+  }
+
+  body {
+    @apply bg-canvas text-ink antialiased;
+  }
+
+  /* Anchors land below the sticky bar rather than under it. */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+}
+
+/**
+ * Motion.
+ *
+ * Everything here is opt-in per element and all of it is cancelled wholesale for anyone who
+ * has asked for less — the reveal hook stops observing as well, so a reduced-motion visitor
+ * gets the finished page immediately rather than a still frame of an animation that never
+ * runs.
+ */
+@layer utilities {
+  @keyframes upfront-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 1.25rem, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes upfront-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -0.75rem, 0);
+    }
+  }
+
+  @keyframes upfront-pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes upfront-sweep {
+    from {
+      stroke-dashoffset: var(--sweep-length);
+    }
+    to {
+      stroke-dashoffset: var(--sweep-offset, 0);
+    }
+  }
+
+  @keyframes upfront-grow {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /* Applied by the reveal hook once an element has been seen, never before — so nothing
+     animates off screen and nothing is stuck invisible if the observer never fires. */
+  .is-revealed .reveal-item {
+    animation: upfront-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  .animate-drift {
+    animation: upfront-drift 9s ease-in-out infinite;
+  }
+
+  .animate-soft-pulse {
+    animation: upfront-pulse 6s ease-in-out infinite;
+  }
+
+  .is-revealed .animate-sweep {
+    animation: upfront-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  .is-revealed .animate-grow {
+    animation: upfront-grow 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--reveal-delay, 0ms);
+    transform-origin: left center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .is-revealed .reveal-item,
+    .animate-drift,
+    .animate-soft-pulse,
+    .is-revealed .animate-sweep,
+    .is-revealed .animate-grow {
+      animation: none !important;
+    }
+
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}

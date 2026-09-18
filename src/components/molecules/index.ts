@@ -1,0 +1,6 @@
+export * from './AvailabilityFigure';
+export * from './CeilingFigure';
+export * from './FeatureCard';
+export * from './HeroFigure';
+export * from './SplitFigure';
+export * from './TeamFigure';
