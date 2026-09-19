@@ -1,3 +1,5 @@
+import { useCopy } from '@/lib';
+
 /** Monday to Friday, eight rows of half-hours. The shape of a working week, abstracted. */
 const COLUMNS = 5;
 const ROWS = 8;
@@ -6,6 +8,28 @@ const ROWS = 8;
 const FILLED = new Set([3, 9, 11, 16, 17, 22, 26, 28, 31, 34]);
 /** The one that lands while you watch, a beat after the rest have settled. */
 const ARRIVING = 19;
+
+/**
+ * The grid, worked out once at module scope.
+ *
+ * Built here rather than inside the render so a cell is a thing with an identity — its
+ * position in the week — instead of a number that happens to be where it sits. The delays
+ * are part of that identity: the empty grid draws itself in a wave, then the bookings land,
+ * then the new one. Reading order, not decoration.
+ */
+const CELLS = Array.from({ length: COLUMNS * ROWS }, (_, index) => {
+  const column = index % COLUMNS;
+  const row = Math.floor(index / COLUMNS);
+  const filled = FILLED.has(index);
+  const arriving = index === ARRIVING;
+
+  return {
+    id: `${column}-${row}`,
+    filled,
+    arriving,
+    delay: arriving ? 1500 : filled ? 700 + (index % 7) * 55 : column * 28 + row * 34,
+  };
+});
 
 /**
  * The hero's composition: a week, filling up.
@@ -19,6 +43,8 @@ const ARRIVING = 19;
  * read.
  */
 export function HeroFigure() {
+  const copy = useCopy().heroFigure;
+
   return (
     <div className="relative mx-auto w-full max-w-lg">
       {/* Two soft discs behind the grid, drifting out of phase. They give the composition
@@ -35,47 +61,32 @@ export function HeroFigure() {
 
       <div className="relative rounded-2xl border border-white/10 bg-white/8 p-5 backdrop-blur-sm sm:p-6">
         <div className="flex items-center justify-between">
-          <span className="font-semibold text-sm text-white">This week</span>
+          <span className="font-semibold text-sm text-white">{copy.thisWeek}</span>
           <span className="rounded-full bg-white/12 px-2.5 py-1 font-medium text-[11px] text-white/80">
-            Europe/Lisbon
+            {copy.timezone}
           </span>
         </div>
 
+        {/* One image to a screen reader rather than forty empty boxes it has to walk. */}
         <div
+          role="img"
+          aria-label={copy.alt}
           className="mt-4 grid gap-1.5"
           style={{ gridTemplateColumns: `repeat(${COLUMNS}, minmax(0, 1fr))` }}
         >
-          {Array.from({ length: COLUMNS * ROWS }, (_, index) => {
-            const filled = FILLED.has(index);
-            const arriving = index === ARRIVING;
-
-            return (
-              <div
-                // Position is the identity here — cell 12 is Wednesday at 11:00 and stays
-                // that whatever else changes. Spelled out rather than passing the index,
-                // which is the same value and reads like an oversight.
-                key={`${index % COLUMNS}-${Math.floor(index / COLUMNS)}`}
-                className={`reveal-item h-5 rounded-[5px] sm:h-6 ${
-                  arriving
-                    ? 'bg-brand-300 ring-2 ring-brand-200'
-                    : filled
-                      ? 'bg-brand-400/80'
-                      : 'bg-white/6'
-                }`}
-                style={
-                  {
-                    // The empty grid draws itself in a quick wave, then the bookings land,
-                    // then the new one. Reading order, not decoration.
-                    '--reveal-delay': arriving
-                      ? '1500ms'
-                      : filled
-                        ? `${700 + (index % 7) * 55}ms`
-                        : `${(index % COLUMNS) * 28 + Math.floor(index / COLUMNS) * 34}ms`,
-                  } as React.CSSProperties
-                }
-              />
-            );
-          })}
+          {CELLS.map((cell) => (
+            <div
+              key={cell.id}
+              className={`reveal-item h-5 rounded-[5px] sm:h-6 ${
+                cell.arriving
+                  ? 'bg-brand-300 ring-2 ring-brand-200'
+                  : cell.filled
+                    ? 'bg-brand-400/80'
+                    : 'bg-white/6'
+              }`}
+              style={{ '--reveal-delay': `${cell.delay}ms` } as React.CSSProperties}
+            />
+          ))}
         </div>
 
         <div
@@ -84,8 +95,8 @@ export function HeroFigure() {
         >
           <span aria-hidden="true" className="size-2 shrink-0 rounded-full bg-brand-300" />
           <p className="text-[13px] text-white/85">
-            <span className="font-semibold text-white">Marta Costa</span> booked Thursday 14:30
-            <span className="text-white/60"> · deposit paid</span>
+            <span className="font-semibold text-white">{copy.bookedName}</span> {copy.bookedWhen}
+            <span className="text-white/60"> {copy.bookedPaid}</span>
           </p>
         </div>
       </div>

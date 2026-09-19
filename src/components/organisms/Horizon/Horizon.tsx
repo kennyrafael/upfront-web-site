@@ -1,31 +1,5 @@
 import { Section } from '@/components/atoms';
-
-const STEPS = [
-  {
-    label: 'Now',
-    heading: 'Bookings, payments, compliance',
-    body: 'The public page, the calendar, deposits and balances, recibos and deadlines. This is what exists.',
-    state: 'done' as const,
-  },
-  {
-    label: 'Next',
-    heading: 'Português, then Español',
-    body: 'Deliberately last, so the strings are extracted once rather than three times. The first providers see it in English, and that cost was accepted on purpose.',
-    state: 'next' as const,
-  },
-  {
-    label: 'After',
-    heading: 'A secretary that answers the phone',
-    body: 'Checks the diary, books, moves and cancels — against the same rules the booking page uses. It is one feature among several, and it comes once the rest is solid.',
-    state: 'later' as const,
-  },
-  {
-    label: 'Then',
-    heading: 'España',
-    body: 'The same problems with a different tax code. Autónomos, not trabalhadores independentes.',
-    state: 'later' as const,
-  },
-];
+import { useCopy } from '@/lib';
 
 const DOT = {
   done: 'bg-brand-300',
@@ -34,22 +8,51 @@ const DOT = {
 };
 
 /**
- * What is built, and what is not.
+ * What is built, and what is coming.
  *
- * Here because the alternative is implying the voice work already exists, which it does
- * not — and a provider who signs up expecting a phone line and finds a booking page is a
- * provider who leaves. Saying "after" costs a little and buys the right kind of visitor.
+ * Here because the alternative is letting a visitor assume everything on the page arrives
+ * at once. Saying what is next costs a little and buys the right kind of visitor.
+ *
+ * **The AI secretary is commented out rather than removed** — decided 2026-09-19. It is not
+ * in the MVP, and a roadmap band promising a phone line is the fastest way to get somebody
+ * signing up for the wrong thing. The strings stay in both dictionaries and the entry stays
+ * here, so putting it back is uncommenting three lines rather than rewriting a section. Add
+ * `aiLabel` / `aiHeading` / `aiBody` to `pt.ts` and `en.ts` when that day comes.
  */
 export function Horizon() {
+  const copy = useCopy().horizon;
+
+  const steps = [
+    {
+      label: copy.nowLabel,
+      heading: copy.nowHeading,
+      body: copy.nowBody,
+      state: 'done' as const,
+    },
+    {
+      label: copy.nextLabel,
+      heading: copy.nextHeading,
+      body: copy.nextBody,
+      state: 'next' as const,
+    },
+    // {
+    //   label: copy.aiLabel,
+    //   heading: copy.aiHeading,
+    //   body: copy.aiBody,
+    //   state: 'later' as const,
+    // },
+    {
+      label: copy.spainLabel,
+      heading: copy.spainHeading,
+      body: copy.spainBody,
+      state: 'later' as const,
+    },
+  ];
+
   return (
-    <Section
-      tone="dark"
-      eyebrow="Where this is going"
-      title="Built in the order that helps first"
-      lede="The phone-answering AI is the part people ask about. It is also the part that is worth nothing if the calendar underneath it is wrong, so it comes last."
-    >
-      <ol className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
-        {STEPS.map((step, index) => (
+    <Section tone="dark" eyebrow={copy.eyebrow} title={copy.title} lede={copy.lede}>
+      <ol className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-3">
+        {steps.map((step, index) => (
           <li
             key={step.heading}
             className="reveal-item bg-backdrop p-7"

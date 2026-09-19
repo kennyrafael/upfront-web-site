@@ -1,3 +1,5 @@
+import { useCopy } from '@/lib';
+
 /**
  * One payment, two amounts.
  *
@@ -10,11 +12,13 @@
  * a proportion and a proportion is easier to read while it is being drawn.
  */
 export function SplitFigure() {
+  const copy = useCopy().splitFigure;
+
   return (
     <div className="w-full max-w-md">
       <div className="flex items-baseline justify-between">
-        <span className="font-medium text-ink-muted text-sm">Coloração</span>
-        <span className="font-semibold text-brand-900 text-xl tabular-nums">65,00 €</span>
+        <span className="font-medium text-ink-muted text-sm">{copy.service}</span>
+        <span className="font-semibold text-brand-900 text-xl tabular-nums">{copy.price}</span>
       </div>
 
       {/* The bar. Two segments in one track, so the split is a boundary rather than a gap. */}
@@ -23,13 +27,13 @@ export function SplitFigure() {
           className="animate-grow flex w-[20%] items-center justify-center bg-brand-900"
           style={{ '--reveal-delay': '80ms' } as React.CSSProperties}
         >
-          <span className="font-semibold text-[11px] text-white">13,00</span>
+          <span className="font-semibold text-[11px] text-white">{copy.keptAmount}</span>
         </div>
         <div
           className="animate-grow flex flex-1 items-center justify-center bg-brand-700/20"
           style={{ '--reveal-delay': '260ms' } as React.CSSProperties}
         >
-          <span className="font-semibold text-[11px] text-brand-900">52,00</span>
+          <span className="font-semibold text-[11px] text-brand-900">{copy.returnedAmount}</span>
         </div>
       </div>
 
@@ -40,10 +44,8 @@ export function SplitFigure() {
         >
           <span aria-hidden="true" className="mt-1.5 size-2.5 shrink-0 rounded-sm bg-brand-900" />
           <div>
-            <dt className="font-medium text-ink">Kept if they cancel</dt>
-            <dd className="text-ink-muted">
-              The deposit portion. The slot was lost at the shop's expense.
-            </dd>
+            <dt className="font-medium text-ink">{copy.keptHeading}</dt>
+            <dd className="text-ink-muted">{copy.keptBody}</dd>
           </div>
         </div>
         <div
@@ -55,10 +57,8 @@ export function SplitFigure() {
             className="mt-1.5 size-2.5 shrink-0 rounded-sm bg-brand-700/40"
           />
           <div>
-            <dt className="font-medium text-ink">Returned</dt>
-            <dd className="text-ink-muted">
-              With the notice the client was promised before they paid.
-            </dd>
+            <dt className="font-medium text-ink">{copy.returnedHeading}</dt>
+            <dd className="text-ink-muted">{copy.returnedBody}</dd>
           </div>
         </div>
       </dl>

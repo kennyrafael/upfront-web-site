@@ -1,5 +1,5 @@
 import { Button } from '@/components/atoms';
-import { APP_URL, CONTACT_EMAIL, useReveal } from '@/lib';
+import { APP_URL, CONTACT_EMAIL, useCopy, useReveal } from '@/lib';
 
 /**
  * The last thing on the page, and the only place that asks for anything.
@@ -9,6 +9,7 @@ import { APP_URL, CONTACT_EMAIL, useReveal } from '@/lib';
  * work it out from a signup form.
  */
 export function ClosingCta() {
+  const copy = useCopy().cta;
   const reveal = useReveal<HTMLElement>();
 
   return (
@@ -31,23 +32,22 @@ export function ClosingCta() {
           className="reveal-item text-balance font-semibold text-3xl text-white tracking-tight sm:text-4xl"
           style={{ '--reveal-delay': '0ms' } as React.CSSProperties}
         >
-          Have a look at it
+          {copy.title}
         </h2>
         <p
           className="reveal-item mt-5 text-pretty text-lg text-onbackdrop leading-relaxed"
           style={{ '--reveal-delay': '80ms' } as React.CSSProperties}
         >
-          It is being built now, with providers in Portugal. If your shop has a wrinkle nothing here
-          covers — and it probably does — that is the useful conversation.
+          {copy.body}
         </p>
 
         <div
           className="reveal-item mt-9 flex flex-wrap justify-center gap-3"
           style={{ '--reveal-delay': '160ms' } as React.CSSProperties}
         >
-          <Button href={APP_URL}>Open the app</Button>
+          <Button href={APP_URL}>{copy.primary}</Button>
           <Button href={`mailto:${CONTACT_EMAIL}`} variant="secondary">
-            Talk to us
+            {copy.secondary}
           </Button>
         </div>
       </div>

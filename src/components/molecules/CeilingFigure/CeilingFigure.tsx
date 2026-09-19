@@ -1,8 +1,10 @@
+import { useCopy } from '@/lib';
+
 /** Semicircle from left to right, radius 110, centred at (140, 130). */
 const ARC = 'M 30 130 A 110 110 0 0 1 250 130';
 /** π·r for a semicircle. Hard-coded rather than measured, so it cannot drift from the path. */
 const ARC_LENGTH = 345.6;
-/** How far round the needle sits. Illustrative — the product reads it from real invoices. */
+/** How far round the sweep sits. Illustrative — the product reads it from real invoices. */
 const PROGRESS = 0.62;
 
 /**
@@ -18,14 +20,11 @@ const PROGRESS = 0.62;
  * noticing — the same discipline `compliance.config.ts` applies to itself.
  */
 export function CeilingFigure() {
+  const copy = useCopy().ceilingFigure;
+
   return (
-    <svg
-      viewBox="0 0 280 175"
-      className="h-auto w-full max-w-sm"
-      role="img"
-      aria-label="A semicircular gauge a little under two thirds full, showing turnover against the IVA exemption ceiling."
-    >
-      <title>Turnover against the IVA exemption ceiling</title>
+    <svg viewBox="0 0 280 175" className="h-auto w-full max-w-sm" role="img" aria-label={copy.alt}>
+      <title>{copy.title}</title>
 
       <path
         d={ARC}
@@ -68,13 +67,13 @@ export function CeilingFigure() {
         textAnchor="middle"
         className="fill-brand-900 font-semibold text-[26px]"
       >
-        62%
+        {copy.percent}
       </text>
       <text x="140" y="144" textAnchor="middle" className="fill-ink-muted text-[12px]">
-        of the exemption ceiling
+        {copy.caption}
       </text>
       <text x="250" y="168" textAnchor="middle" className="fill-ink-muted text-[11px]">
-        art. 53.º
+        {copy.article}
       </text>
     </svg>
   );

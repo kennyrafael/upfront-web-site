@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/atoms';
-import { APP_URL, cn } from '@/lib';
-
-const LINKS = [
-  { href: '#bookings', label: 'Bookings' },
-  { href: '#payments', label: 'Payments' },
-  { href: '#compliance', label: 'Compliance' },
-];
+import { LocaleSwitch } from '@/components/molecules';
+import { APP_URL, cn, useCopy } from '@/lib';
 
 /**
  * Transparent over the hero, solid once you have left it.
@@ -16,6 +11,7 @@ const LINKS = [
  * sentinel and an observer because it is one number, read passively.
  */
 export function SiteNav() {
+  const copy = useCopy();
   const [lifted, setLifted] = useState(false);
 
   useEffect(() => {
@@ -25,6 +21,12 @@ export function SiteNav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const links = [
+    { href: '#bookings', label: copy.nav.bookings },
+    { href: '#payments', label: copy.nav.payments },
+    { href: '#compliance', label: copy.nav.compliance },
+  ];
+
   return (
     <header
       className={cn(
@@ -32,7 +34,7 @@ export function SiteNav() {
         lifted ? 'border-hairline border-b bg-canvas/90 backdrop-blur-lg' : 'bg-transparent',
       )}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-6 sm:px-8">
+      <div className="mx-auto flex h-16 max-w-6xl items-center gap-5 px-6 sm:px-8">
         <a
           href="#top"
           className={cn(
@@ -46,8 +48,8 @@ export function SiteNav() {
         {/* Hidden rather than collapsed into a drawer: three anchors on a page you can
             simply scroll do not earn a menu, and a menu that exists must then be built
             properly. */}
-        <nav className="hidden gap-6 md:flex" aria-label="Sections">
-          {LINKS.map((link) => (
+        <nav className="hidden gap-6 md:flex" aria-label={copy.nav.sections}>
+          {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -61,9 +63,10 @@ export function SiteNav() {
           ))}
         </nav>
 
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-3 sm:gap-4">
+          <LocaleSwitch tone={lifted ? 'default' : 'inverse'} />
           <Button href={APP_URL} size="2" variant={lifted ? 'primary' : 'secondary'}>
-            Open the app
+            {copy.nav.openApp}
           </Button>
         </div>
       </div>

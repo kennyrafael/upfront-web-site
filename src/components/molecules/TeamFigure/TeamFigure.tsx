@@ -1,3 +1,5 @@
+import { useCopy } from '@/lib';
+
 const PEOPLE = [
   {
     name: 'Ana',
@@ -30,15 +32,16 @@ const PEOPLE = [
  * doing the work were the same row. Most salons and barbershops are four of these columns,
  * and one visit can span two of them — a haircut with Ana and a beard trim with Rui.
  *
- * Blocks grow downward on reveal, one column after another, so the figure reads left to
- * right like the day it stands for.
+ * The names are not translated. They are people, and people keep their names.
  */
 export function TeamFigure() {
+  const copy = useCopy().teamFigure;
+
   return (
     <div className="w-full max-w-md rounded-2xl bg-sheet p-5 ring-1 ring-hairline">
       <div className="flex items-center justify-between">
-        <span className="font-medium text-ink text-sm">Thursday</span>
-        <span className="text-ink-muted text-xs">4 people</span>
+        <span className="font-medium text-ink text-sm">{copy.day}</span>
+        <span className="text-ink-muted text-xs">{copy.people}</span>
       </div>
 
       <div className="mt-4 grid grid-cols-4 gap-2.5">

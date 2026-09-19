@@ -1,20 +1,6 @@
 import { Section } from '@/components/atoms';
 import { AvailabilityFigure, TeamFigure } from '@/components/molecules';
-
-const POINTS = [
-  {
-    heading: 'A page your clients use themselves',
-    body: 'Your own address, your own colours, your own logo. Off until you publish it — the calendar is private until you say otherwise.',
-  },
-  {
-    heading: 'Times that are actually free',
-    body: 'Availability is the shop being open, that person working, and them being neither away nor already booked. Offering a slot you cannot honour is worse than offering none.',
-  },
-  {
-    heading: 'Clients cancel and move without ringing you',
-    body: 'A manage link in their confirmation, so the slot comes back on the calendar the moment they let it go, rather than when you find out.',
-  },
-];
+import { useCopy } from '@/lib';
 
 /**
  * The booking half, in two figures.
@@ -24,28 +10,29 @@ const POINTS = [
  * objection that ends most demos of a single-provider tool.
  */
 export function BookingsSection() {
+  const copy = useCopy().bookings;
+
+  const points = [
+    { heading: copy.pageHeading, body: copy.pageBody },
+    { heading: copy.freeHeading, body: copy.freeBody },
+    { heading: copy.manageHeading, body: copy.manageBody },
+  ];
+
   return (
-    <Section
-      id="bookings"
-      eyebrow="Bookings"
-      title="Taken while you are working, not after you close"
-      lede="A public page per shop, backed by the same availability rules the app itself enforces — so a client can never book something the calendar would refuse."
-    >
+    <Section id="bookings" eyebrow={copy.eyebrow} title={copy.title} lede={copy.lede}>
       <div className="mt-14 grid items-center gap-12 lg:grid-cols-2">
-        <div>
-          <dl className="space-y-7">
-            {POINTS.map((point, index) => (
-              <div
-                key={point.heading}
-                className="reveal-item border-brand-700/25 border-l-2 pl-5"
-                style={{ '--reveal-delay': `${index * 110}ms` } as React.CSSProperties}
-              >
-                <dt className="font-semibold text-base text-brand-900">{point.heading}</dt>
-                <dd className="mt-1.5 text-ink-muted text-sm leading-relaxed">{point.body}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+        <dl className="space-y-7">
+          {points.map((point, index) => (
+            <div
+              key={point.heading}
+              className="reveal-item border-brand-700/25 border-l-2 pl-5"
+              style={{ '--reveal-delay': `${index * 110}ms` } as React.CSSProperties}
+            >
+              <dt className="font-semibold text-base text-brand-900">{point.heading}</dt>
+              <dd className="mt-1.5 text-ink-muted text-sm leading-relaxed">{point.body}</dd>
+            </div>
+          ))}
+        </dl>
 
         <div className="flex justify-center">
           <AvailabilityFigure />
@@ -62,23 +49,19 @@ export function BookingsSection() {
             className="reveal-item text-balance font-semibold text-2xl text-brand-900 tracking-tight"
             style={{ '--reveal-delay': '80ms' } as React.CSSProperties}
           >
-            Most shops are not one person
+            {copy.teamHeading}
           </h3>
           <p
             className="reveal-item mt-4 text-ink-muted leading-relaxed"
             style={{ '--reveal-delay': '140ms' } as React.CSSProperties}
           >
-            Everyone gets their own hours, their own time off and their own list of services — with
-            a different price or a different length where they need one. A client picks a person or
-            leaves it to you, and one visit can span two of them: a cut with Ana and a beard trim
-            with Rui, on one booking.
+            {copy.teamBodyOne}
           </p>
           <p
             className="reveal-item mt-4 text-ink-muted leading-relaxed"
             style={{ '--reveal-delay': '200ms' } as React.CSSProperties}
           >
-            Owners and managers see the whole floor. Staff see their own day. The front desk takes
-            money and books people in without being able to read the compliance file.
+            {copy.teamBodyTwo}
           </p>
         </div>
       </div>

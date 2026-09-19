@@ -1,6 +1,6 @@
 import { Button } from '@/components/atoms';
 import { HeroFigure } from '@/components/molecules';
-import { APP_URL, useReveal } from '@/lib';
+import { APP_URL, useCopy, useReveal } from '@/lib';
 
 /**
  * The promise, in one sentence, over the only dark field on the page.
@@ -9,8 +9,12 @@ import { APP_URL, useReveal } from '@/lib';
  * evidence that follows it, and it gives the composition somewhere to sit without a
  * photograph. There are no photographs on purpose — there is no shop to photograph yet, and
  * stock pictures of smiling strangers are the fastest way to look like everyone else.
+ *
+ * The pill says what the product is rather than what stage it is at. A status badge dates
+ * itself the day it stops being true, and nobody remembers to take it down.
  */
 export function Hero() {
+  const copy = useCopy().hero;
   const reveal = useReveal<HTMLDivElement>({ threshold: 0 });
 
   return (
@@ -19,7 +23,7 @@ export function Hero() {
       ref={reveal.ref}
       className={`relative overflow-hidden bg-backdrop ${reveal.className ?? ''}`}
     >
-      {/* The geometry that frames the field: one large ring and a fine grid, both far enough
+      {/* The geometry that frames the field: two large rings and a fine grid, all far enough
           back to be texture rather than content. */}
       <div
         aria-hidden="true"
@@ -47,33 +51,30 @@ export function Hero() {
             style={{ '--reveal-delay': '0ms' } as React.CSSProperties}
           >
             <span aria-hidden="true" className="size-1.5 rounded-full bg-brand-300" />
-            In development · Portugal first
+            {copy.pill}
           </p>
 
           <h1
             className="reveal-item mt-6 text-balance font-semibold text-4xl text-white leading-[1.08] tracking-tight sm:text-5xl md:text-6xl"
             style={{ '--reveal-delay': '80ms' } as React.CSSProperties}
           >
-            Your shop keeps running while you are with a client.
+            {copy.headline}
           </h1>
 
           <p
             className="reveal-item mt-6 max-w-xl text-pretty text-lg text-onbackdrop leading-relaxed"
             style={{ '--reveal-delay': '160ms' } as React.CSSProperties}
           >
-            Upfront is an operations platform for independent service providers. A booking page your
-            clients use themselves, deposits that hold the slot, a calendar with a column per
-            person, and your recibos verdes and IVA dates kept in order — instead of four tools that
-            have never heard of each other.
+            {copy.lede}
           </p>
 
           <div
             className="reveal-item mt-9 flex flex-wrap gap-3"
             style={{ '--reveal-delay': '240ms' } as React.CSSProperties}
           >
-            <Button href="#bookings">See what it does</Button>
+            <Button href="#bookings">{copy.ctaPrimary}</Button>
             <Button href={APP_URL} variant="secondary">
-              Open the app
+              {copy.ctaSecondary}
             </Button>
           </div>
 
@@ -81,7 +82,7 @@ export function Hero() {
             className="reveal-item mt-6 text-[13px] text-white/50"
             style={{ '--reveal-delay': '320ms' } as React.CSSProperties}
           >
-            Built for Portugal, then Spain. Not an answering service with a dashboard bolted on.
+            {copy.note}
           </p>
         </div>
 
