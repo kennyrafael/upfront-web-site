@@ -39,7 +39,17 @@ interface LocaleState {
 
 const LocaleContext = createContext<LocaleState | null>(null);
 
-export function LocaleProvider({ children }: { children: ReactNode }) {
+/**
+ * Which document this is.
+ *
+ * The site was one page and the title was therefore a constant. It is two now, and a pricing
+ * page announcing itself as the home page is wrong in the tab, in a bookmark and in a search
+ * result. Named rather than passed as a string because the words still belong to the
+ * dictionaries — the provider picks which pair, never what they say.
+ */
+export type Page = 'home' | 'plans';
+
+export function LocaleProvider({ children, page = 'home' }: { children: ReactNode; page?: Page }) {
   const [locale, setLocaleState] = useState<Locale>(readLocale);
   const copy = DICTIONARIES[locale];
 
@@ -57,11 +67,11 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     // screen reader picks a voice from, and what a translation prompt reads. A Portuguese
     // page announced as English is read aloud in the wrong accent, word by word.
     document.documentElement.lang = copy.meta.localeTag;
-    document.title = copy.meta.title;
-    document
-      .querySelector('meta[name="description"]')
-      ?.setAttribute('content', copy.meta.description);
-  }, [copy]);
+    const title = page === 'plans' ? copy.meta.plansTitle : copy.meta.title;
+    const description = page === 'plans' ? copy.meta.plansDescription : copy.meta.description;
+    document.title = title;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+  }, [copy, page]);
 
   // `.Provider` explicitly. React 19 allows the context itself as the provider, and it did
   // not work here — the consumers read null. Not worth the archaeology when the form that

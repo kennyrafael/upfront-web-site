@@ -6,5 +6,6 @@ export * from './Hero';
 export * from './Horizon';
 export * from './Pains';
 export * from './PaymentsSection';
+export * from './Plans';
 export * from './SiteFooter';
 export * from './SiteNav';

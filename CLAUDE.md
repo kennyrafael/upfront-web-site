@@ -12,6 +12,20 @@ The same stack and the same atomic-design conventions as the dashboard, so nothi
 moving between them — **but no router, no stores and no API client.** It is a page, not an
 application. Keep it that way; the moment it needs to read data it belongs in the dashboard.
 
+**Two documents, not one, since 2026-09-29**: `/` and `/planos`. Still no router — each is its
+own HTML file with its own entry, listed in `vite.config.ts` under `build.rollupOptions.input`,
+sharing `src/mount.tsx` for the load-bearing CSS import order. A third page is three lines.
+
+The visitor's language survives a full page load because it lives in `localStorage`, which is
+the only thing a router would have bought here. Two consequences worth knowing:
+
+- **`appType: 'mpa'` is not optional.** The default hands any unknown path to `index.html`, so
+  `/planos` would serve the home page in development and nowhere else.
+- **A new page needs adding to `PAGES` in `vite.config.ts`.** Vite's dev server resolves
+  `/planos/` but not `/planos`, and the deployment is the other way round; the little
+  `extensionlessPages` plugin makes development agree with production so a nav link can be
+  correct in both.
+
 It is **pinned to the light appearance**, for the same reason the public booking page is: it
 belongs to visitors rather than to anyone who works here.
 
@@ -33,5 +47,13 @@ you are changing one of two, not both.
 
 ## Deployment
 
-No `vercel.json`. A static build with no router needs no rewrites, and the file that used to be
-here held nothing but a build-filter command from when this lived in a monorepo.
+`vercel.json` holds two lines and no rewrites: `cleanUrls` and `trailingSlash: false`, so
+`planos/index.html` is served at `/planos`. It came back on 2026-09-29 with the second page —
+the file deleted before it held nothing but a build-filter command from when this lived in a
+monorepo, and the reason it was not needed ("a static build with no router needs no rewrites")
+was about a single document rather than about rewrites.
+
+**Deliberately not a catch-all rewrite.** A `/(.*) → /index.html` rule is how an SPA is
+deployed and it is also how a typo becomes the home page with a 200: every wrong URL renders
+something, so a missing page is invisible until somebody reports it. `cleanUrls` says how files
+are addressed and leaves a genuine 404 alone.

@@ -4,6 +4,8 @@ import { useCopy } from '@/lib';
 
 export interface SiteLayoutProps {
   children: ReactNode;
+  /** Passed through to the bar: solid from the start on a page with no dark hero. */
+  solidNav?: boolean;
 }
 
 /**
@@ -12,7 +14,7 @@ export interface SiteLayoutProps {
  * The skip link is not ceremony. The bar is fixed and the page is long, so a keyboard
  * visitor would otherwise tab through the whole nav on every section anchor they follow.
  */
-export function SiteLayout({ children }: SiteLayoutProps) {
+export function SiteLayout({ children, solidNav = false }: SiteLayoutProps) {
   const copy = useCopy();
 
   return (
@@ -23,7 +25,7 @@ export function SiteLayout({ children }: SiteLayoutProps) {
       >
         {copy.nav.skipToContent}
       </a>
-      <SiteNav />
+      <SiteNav solid={solidNav} />
       <main id="main">{children}</main>
     </>
   );

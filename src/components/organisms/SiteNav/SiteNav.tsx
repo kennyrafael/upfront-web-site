@@ -10,21 +10,38 @@ import { APP_URL, cn, useCopy } from '@/lib';
  * has to as well or the wordmark disappears. Driven by a scroll listener rather than a
  * sentinel and an observer because it is one number, read passively.
  */
-export function SiteNav() {
+export interface SiteNavProps {
+  /**
+   * Solid from the first pixel, for a page that does not open on the dark hero.
+   *
+   * Without it the bar starts transparent with white text, which is correct over the hero and
+   * invisible over anything pale — the plans page would open with no navigation at all until
+   * you scrolled.
+   */
+  solid?: boolean;
+}
+
+export function SiteNav({ solid = false }: SiteNavProps) {
   const copy = useCopy();
-  const [lifted, setLifted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setLifted(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const lifted = solid || scrolled;
+
+  // Rooted at `/` rather than bare fragments, because this bar is now on two pages and
+  // `#payments` points at nothing from the plans page. Same-document fragment navigation is
+  // unaffected on the home page: the path already matches, so nothing reloads.
   const links = [
-    { href: '#bookings', label: copy.nav.bookings },
-    { href: '#payments', label: copy.nav.payments },
-    { href: '#compliance', label: copy.nav.compliance },
+    { href: '/#bookings', label: copy.nav.bookings },
+    { href: '/#payments', label: copy.nav.payments },
+    { href: '/#compliance', label: copy.nav.compliance },
+    { href: '/planos', label: copy.nav.plans },
   ];
 
   return (
@@ -36,7 +53,7 @@ export function SiteNav() {
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-5 px-6 sm:px-8">
         <a
-          href="#top"
+          href="/"
           className={cn(
             'font-semibold text-lg tracking-tight transition-colors',
             lifted ? 'text-brand-900' : 'text-white',

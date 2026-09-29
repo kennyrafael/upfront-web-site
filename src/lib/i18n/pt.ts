@@ -18,6 +18,9 @@ export const pt = {
     title: 'Upfront — marcações, pagamentos e obrigações fiscais',
     description:
       'A plataforma de operações para profissionais independentes: página de marcações, sinais por MB WAY, agenda com uma coluna por pessoa, e recibos verdes e prazos de IVA em ordem.',
+    plansTitle: 'Planos e preços — Upfront',
+    plansDescription:
+      'Quatro planos para profissionais independentes e pequenos espaços em Portugal. A comissão sobre pagamentos é igual em todos; o plano muda o que pode fazer.',
     localeTag: 'pt-PT',
   },
 
@@ -26,6 +29,7 @@ export const pt = {
     bookings: 'Marcações',
     payments: 'Pagamentos',
     compliance: 'Fiscal',
+    plans: 'Planos',
     openApp: 'Entrar',
     skipToContent: 'Saltar para o conteúdo',
     language: 'Idioma',
@@ -193,6 +197,58 @@ export const pt = {
     body: 'Se o seu espaço tem uma particularidade que nada aqui cobre — e provavelmente tem — é essa a conversa que interessa.',
     primary: 'Entrar',
     secondary: 'Falar connosco',
+  },
+
+  /**
+   * The plans page. **Only words here** — which tier carries which feature is structure and
+   * lives in `Plans.tsx`, for the reason at the top of this file.
+   *
+   * Each tier says what it adds over the one below rather than repeating everything, which is
+   * how the pricing decision is written down and what keeps four cards readable.
+   */
+  plans: {
+    eyebrow: 'Planos',
+    title: 'Pague pelo tamanho do seu espaço, não pelo que fatura',
+    lede: 'A comissão sobre pagamentos é igual em todos os planos. O plano muda o que pode fazer, nunca quanto lhe custa receber.',
+    monthly: 'Mensal',
+    annual: 'Anual',
+    annualSaving: 'Menos 10%',
+    cycleLabel: 'Como quer pagar',
+    perMonth: '/mês',
+    annualBilled: (amount: string) => `Ou ${amount} por ano`,
+    monthlyEquivalent: (amount: string) => `Equivale a ${amount} por mês`,
+    start: 'Começar',
+    startFree: 'Começar grátis',
+    builtOn: (plan: string) => `Tudo o que está em ${plan}, mais:`,
+    freeName: 'Grátis',
+    freePrice: 'Grátis',
+    freeWho: 'Para quem trabalha sozinho e quer a agenda em ordem.',
+    freeOnePerson: 'Uma pessoa',
+    freeBookingPage: 'Página de marcações pública, com a sua cor e o seu logótipo',
+    freeClients: 'Marcações, clientes e histórico',
+    freeDeposits: 'Sinais e pagamentos por MB WAY',
+    freeCompliance: 'Rascunhos de recibos verdes e prazos de IVA',
+    freeEmail: 'Confirmações e lembretes por email',
+    soloName: 'Solo',
+    soloWho: 'Para quem tem clientes habituais.',
+    soloRecurring: 'Marcações repetidas — semanais, quinzenais ou mensais',
+    standardName: 'Equipa',
+    standardWho: 'Para um espaço com mais do que um par de mãos.',
+    standardPeople: 'Pessoas sem limite, cada uma com o seu horário',
+    standardCalendar: 'Agenda com uma coluna por pessoa',
+    standardSms: 'Lembretes por SMS — 200 por mês',
+    proName: 'Completo',
+    proWho: 'Para quem recusa marcações por falta de horas.',
+    proWaitlist: 'Lista de espera — quando alguém desmarca, avisamos quem esperava',
+    proSms: 'Lembretes por SMS — 1000 por mês',
+    feeNote:
+      'Um pagamento recebido tem uma comissão de 4% + 0,55 € — já com o custo do Stripe lá dentro, não por cima.',
+    vatNote: 'Preços com IVA incluído.',
+    neverGated:
+      'Os seus recibos, os seus registos fiscais e a exportação dos seus dados nunca dependem do plano. Nem numa conta cancelada.',
+    doubtTitle: 'Não sabe qual?',
+    doubtBody:
+      'Comece no Grátis. Muda de plano quando precisar, e mudar nunca apaga nada do que já lá está.',
   },
 
   footer: {
