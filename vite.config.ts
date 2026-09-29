@@ -64,6 +64,15 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+    /**
+     * One copy of React, and one of Radix Themes.
+     *
+     * `@upfront/ui` is linked from disk while the apps sit side by side, so anything it imports
+     * resolves inside its own `node_modules` first — and two Reacts means every hook called
+     * from inside an atom reads a null dispatcher. Two copies of Themes would be two `Theme`
+     * contexts, which throws nothing and simply paints the wrong palette.
+     */
+    dedupe: ['react', 'react-dom', '@radix-ui/themes'],
   },
   // 5174, because 5173 is the app. The two are expected to run side by side: the site's
   // calls to action point at the app, and a dead link is the easiest thing to ship.

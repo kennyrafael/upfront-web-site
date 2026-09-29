@@ -1,77 +1,24 @@
 @import 'tailwindcss';
 
 /**
- * The same bridge `web/src/index.css` builds, and for the same reason: the site says
- * `text-ink-muted` and `bg-brand-700/8`, and where those colours come from is one file's
- * business. Kept deliberately close to the app's, so a screenshot of the product sitting on
- * this page does not look like a different company made it.
- *
- * Static values here are fallbacks. The live assignments are in the `.radix-themes` block
- * below, because `@theme` emits to `:root` and Radix Themes defines `--accent-*` on its own
- * element — `var(--accent-9)` written at `:root` resolves to nothing at all.
+ * Tailwind does not scan `node_modules`, so without this every utility class used *inside* the
+ * shared atoms is absent from the generated CSS and they come out subtly unstyled.
  */
-@theme {
-  --color-brand-50: #f4fbf7;
-  --color-brand-100: #e6f7ed;
-  --color-brand-200: #d6f1e3;
-  --color-brand-300: #c3e9d7;
-  --color-brand-400: #acdec8;
-  --color-brand-500: #8bceb6;
-  --color-brand-600: #56ba9f;
-  --color-brand-700: #29a383;
-  --color-brand-800: #26997b;
-  --color-brand-900: #1d3b31;
+@source '../node_modules/@upfront/ui/dist';
 
-  --color-brand-ink: #208368;
-  --color-oncolor: #ffffff;
-
-  --color-canvas: #fbfefd;
-  --color-sheet: #ffffff;
-  --color-ink: #1a211f;
-  --color-ink-muted: #5f6d68;
-  --color-hairline: rgba(29, 59, 49, 0.1);
-
-  /* The deep field the hero and the closing band sit on. A literal, not a scale step: the
-     ramp is built for light surfaces and step 12 is not a background. */
-  --color-backdrop: oklch(0.24 0.046 162);
-  --color-onbackdrop: rgba(255, 255, 255, 0.78);
-
-  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-}
+/**
+ * The token bridge, now shared with the dashboard and the admin app.
+ *
+ * This page used to carry its own copy. To its credit the *live* assignments agreed with the
+ * dashboard's — the same `var(--gray-12)`, the same `var(--gray-a6)`, the same backdrop — which
+ * somebody had been keeping in step by hand. What had drifted was the `@theme` fallbacks beneath
+ * them and the font stack, and a screenshot of the product on this page should not look like a
+ * different company made it whichever layer the difference is in. It was already the stated
+ * intent; it simply was not enforceable with two files.
+ */
+@import '@upfront/ui/tokens.css';
 
 @layer base {
-  /**
-   * Pinned to the light appearance, deliberately.
-   *
-   * The same call the public booking page makes: this belongs to visitors rather than to
-   * anyone who works here, and an institutional page is a document before it is an
-   * interface. One appearance is also one set of contrast decisions to get right rather
-   * than two.
-   */
-  .radix-themes {
-    --color-brand-50: var(--accent-2);
-    --color-brand-100: var(--accent-3);
-    --color-brand-200: var(--accent-4);
-    --color-brand-300: var(--accent-5);
-    --color-brand-400: var(--accent-6);
-    --color-brand-500: var(--accent-7);
-    --color-brand-600: var(--accent-8);
-    --color-brand-700: var(--accent-9);
-    --color-brand-800: var(--accent-10);
-    --color-brand-900: var(--accent-12);
-
-    /* Step 11 for text, step 9 for fills — the distinction the app learned the hard way
-       when its accent became choosable. Step 9 as body text fails WCAG AA even in green. */
-    --color-brand-ink: var(--accent-11);
-    --color-oncolor: var(--accent-contrast);
-
-    --color-canvas: var(--color-background);
-    --color-sheet: var(--color-panel-solid);
-    --color-ink: var(--gray-12);
-    --color-ink-muted: var(--gray-11);
-    --color-hairline: var(--gray-a6);
-  }
-
   body {
     @apply bg-canvas text-ink antialiased;
   }

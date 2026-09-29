@@ -46,7 +46,7 @@ export function ClosingCta() {
           style={{ '--reveal-delay': '160ms' } as React.CSSProperties}
         >
           <Button href={APP_URL}>{copy.primary}</Button>
-          <Button href={`mailto:${CONTACT_EMAIL}`} variant="secondary">
+          <Button href={`mailto:${CONTACT_EMAIL}`} variant="outline">
             {copy.secondary}
           </Button>
         </div>

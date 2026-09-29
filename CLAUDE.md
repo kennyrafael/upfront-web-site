@@ -57,3 +57,29 @@ was about a single document rather than about rewrites.
 deployed and it is also how a typo becomes the home page with a 200: every wrong URL renders
 something, so a missing page is invisible until somebody reports it. `cleanUrls` says how files
 are addressed and leaves a genuine 404 alone.
+
+## `@upfront/ui`
+
+`Button` comes from the shared package as of 2026-09-30, along with the token bridge in
+`index.css`. `Eyebrow` and `Section` stayed here: they are this page's own furniture, and a
+component earns a place in the package when a second app wants it.
+
+**The variant this page needed has a name now.** Its `secondary` used to map to Themes'
+`surface` while the dashboard's mapped to `soft` — one word, two looks, which is the drift
+`docs/ecosystem.md` predicted. `secondary` now means `soft` everywhere and the bordered,
+translucent button this page wants **over the dark hero** is `outline`. The three call sites that
+sit on that dark field say so explicitly; the plan cards, which sit on pale sheets, use
+`secondary`.
+
+Two things that must not be forgotten when touching the stylesheet or the config:
+
+- `index.css` needs `@source '../node_modules/@upfront/ui/dist'` **above** the tokens import, or
+  Tailwind never generates the classes used inside the atoms and they come out subtly unstyled
+  with nothing in the console.
+- `vite.config.ts` needs `resolve.dedupe` for react, react-dom and `@radix-ui/themes`. A linked
+  package resolves its own copies first, and two Reacts means every hook inside an atom reads a
+  null dispatcher.
+
+⚠ **The dependency is `file:../ui`, which a Vercel build cannot resolve** — each project builds
+from its own repository. The package has to be pushed and depended on by tag, or published,
+before this deploys again.

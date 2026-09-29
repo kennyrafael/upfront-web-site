@@ -82,7 +82,7 @@ export function SiteNav({ solid = false }: SiteNavProps) {
 
         <div className="ml-auto flex items-center gap-3 sm:gap-4">
           <LocaleSwitch tone={lifted ? 'default' : 'inverse'} />
-          <Button href={APP_URL} size="2" variant={lifted ? 'primary' : 'secondary'}>
+          <Button href={APP_URL} size="sm" variant={lifted ? 'primary' : 'outline'}>
             {copy.nav.openApp}
           </Button>
         </div>

@@ -73,7 +73,7 @@ export function Hero() {
             style={{ '--reveal-delay': '240ms' } as React.CSSProperties}
           >
             <Button href="#bookings">{copy.ctaPrimary}</Button>
-            <Button href={APP_URL} variant="secondary">
+            <Button href={APP_URL} variant="outline">
               {copy.ctaSecondary}
             </Button>
           </div>
