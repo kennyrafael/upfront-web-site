@@ -11,7 +11,7 @@
     "format": "biome check --write ."
   },
   "dependencies": {
-    "@kennycorrea/ui": "file:../ui",
+    "@kennycorrea/ui": "^0.1.0",
     "@radix-ui/themes": "^3.3.0",
     "clsx": "^2.1.1",
     "react": "^19.2.8",
