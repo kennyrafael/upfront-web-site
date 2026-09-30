@@ -80,6 +80,10 @@ Two things that must not be forgotten when touching the stylesheet or the config
   package resolves its own copies first, and two Reacts means every hook inside an atom reads a
   null dispatcher.
 
-⚠ **The dependency is `file:../ui`, which a Vercel build cannot resolve** — each project builds
-from its own repository. The package has to be pushed and depended on by tag, or published,
-before this deploys again.
+✅ **The dependency is a published version**, `^0.1.1`, so this deploys from its own repository.
+
+⚠ **Pin the floor at 0.1.1, not 0.1.0.** 0.1.0's output carried extensionless relative imports,
+which Vite resolves and Node does not — and **nothing here could have caught that**, because this
+app has no test suite and only ever bundles. The dashboard's Vitest run found it. A bundler-only
+consumer cannot tell a broken package from a working one, which is worth knowing before treating a
+green build here as evidence about the package.
