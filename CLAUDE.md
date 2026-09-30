@@ -58,7 +58,7 @@ deployed and it is also how a typo becomes the home page with a 200: every wrong
 something, so a missing page is invisible until somebody reports it. `cleanUrls` says how files
 are addressed and leaves a genuine 404 alone.
 
-## `@upfront/ui`
+## `@kennycorrea/ui`
 
 `Button` comes from the shared package as of 2026-09-30, along with the token bridge in
 `index.css`. `Eyebrow` and `Section` stayed here: they are this page's own furniture, and a
@@ -73,7 +73,7 @@ sit on that dark field say so explicitly; the plan cards, which sit on pale shee
 
 Two things that must not be forgotten when touching the stylesheet or the config:
 
-- `index.css` needs `@source '../node_modules/@upfront/ui/dist'` **above** the tokens import, or
+- `index.css` needs `@source '../node_modules/@kennycorrea/ui/dist'` **above** the tokens import, or
   Tailwind never generates the classes used inside the atoms and they come out subtly unstyled
   with nothing in the console.
 - `vite.config.ts` needs `resolve.dedupe` for react, react-dom and `@radix-ui/themes`. A linked

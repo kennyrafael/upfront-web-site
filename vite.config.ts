@@ -67,7 +67,7 @@ export default defineConfig({
     /**
      * One copy of React, and one of Radix Themes.
      *
-     * `@upfront/ui` is linked from disk while the apps sit side by side, so anything it imports
+     * `@kennycorrea/ui` is linked from disk while the apps sit side by side, so anything it imports
      * resolves inside its own `node_modules` first — and two Reacts means every hook called
      * from inside an atom reads a null dispatcher. Two copies of Themes would be two `Theme`
      * contexts, which throws nothing and simply paints the wrong palette.
